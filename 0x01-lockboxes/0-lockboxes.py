@@ -1,5 +1,7 @@
-#/usr/bin/python3
-""" Lockboxes """
+#!/usr/bin/python3
+# Lockboxes
+
+
 def canUnlockAll(boxes):
     """ Lockboxes """
     if len(boxes) == 0:
