@@ -1,39 +1,40 @@
 #!/usr/bin/python3
-"""Module for stats"""
+"""Module for task 0"""
 import sys
 import signal
+import re
 
 
-def print_stats(file_size, status_codes):
+def print_stats(size, status):
     """Prints the stats"""
-    print("File size: {}".format(file_size))
-    for key in sorted(status_codes.keys()):
-        if status_codes[key] != 0:
-            print("{}: {}".format(key, status_codes[key]))
-
+    print("File size: {}".format(size))
+    for key in sorted(status.keys()):
+        if status[key] != 0:
+            print("{}: {}".format(key, status[key]))
 
 if __name__ == "__main__":
-    """Main method"""
-    file_size = 0
-    status_codes = {"200": 0, "301": 0, "400": 0, "401": 0,
-                    "403": 0, "404": 0, "405": 0, "500": 0}
-    counter = 0
-
+    status = {"200": 0, "301": 0, "400": 0, "401": 0,
+              "403": 0, "404": 0, "405": 0, "500": 0}
+    size = 0
+    count = 0
     try:
         for line in sys.stdin:
-            counter += 1
-            parsed = line.split()
+            count += 1
+            data = line.split()
             try:
-                file_size += int(parsed[-1])
+                size += int(data[-1])
             except ValueError:
                 pass
             try:
-                status_codes[parsed[-2]] += 1
+                status[data[-2]] += 1
             except KeyError:
                 pass
-            if counter % 10 == 0:
-                print_stats(file_size, status_codes)
-        print_stats(file_size, status_codes)
+            if count == 10:
+                print_stats(size, status)
+                count = 0
+        print_stats(size, status)
     except KeyboardInterrupt:
-        print_stats(file_size, status_codes)
+        print_stats(size, status)
         raise
+
+
