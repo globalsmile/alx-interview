@@ -12,6 +12,7 @@ def print_stats(size, status):
         if status[key] != 0:
             print("{}: {}".format(key, status[key]))
 
+
 if __name__ == "__main__":
     status = {"200": 0, "301": 0, "400": 0, "401": 0,
               "403": 0, "404": 0, "405": 0, "500": 0}
@@ -36,5 +37,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print_stats(size, status)
         raise
-
-
