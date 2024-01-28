@@ -1,39 +1,37 @@
 #!/usr/bin/python3
-"""Module for task 0"""
+""" script that reads stdin line by line and computes metrics """
 import sys
-import signal
 import re
 
 
-def print_stats(size, status):
-    """Prints the stats"""
-    print("File size: {}".format(size))
-    for key in sorted(status.keys()):
-        if status[key] != 0:
-            print("{}: {}".format(key, status[key]))
+def print_stats(status_codes, file_size):
+    """ print stats """
+    print("File size: {}".format(file_size))
+    for key in sorted(status_codes.keys()):
+        if status_codes[key] != 0:
+            print("{}: {}".format(key, status_codes[key]))
 
 
 if __name__ == "__main__":
-    status = {"200": 0, "301": 0, "400": 0, "401": 0,
-              "403": 0, "404": 0, "405": 0, "500": 0}
-    size = 0
-    count = 0
+    status_codes = {"200": 0, "301": 0, "400": 0, "401": 0,
+                    "403": 0, "404": 0, "405": 0, "500": 0}
+    file_size = 0
+    counter = 0
     try:
         for line in sys.stdin:
-            count += 1
-            data = line.split()
+            counter += 1
             try:
-                size += int(data[-1])
+                file_size += int(re.split(" ", line)[-1])
             except ValueError:
                 pass
             try:
-                status[data[-2]] += 1
+                status_codes[re.split(" ", line)[-2]] += 1
             except KeyError:
                 pass
-            if count == 10:
-                print_stats(size, status)
-                count = 0
-        print_stats(size, status)
+            if counter == 10:
+                print_stats(status_codes, file_size)
+                counter = 0
+        print_stats(status_codes, file_size)
     except KeyboardInterrupt:
-        print_stats(size, status)
+        print_stats(status_codes, file_size)
         raise
